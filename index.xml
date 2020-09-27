@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Be slower Be Deeper</title>
-    <link>jinying.github.io/</link>
+    <link>https://jinying-che.github.io/jinying.github.io/</link>
     <description>Recent content on Be slower Be Deeper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="jinying.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jinying-che.github.io/jinying.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>jinying.github.io/network/http/</link>
+      <link>https://jinying-che.github.io/jinying.github.io/network/http/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>jinying.github.io/network/http/</guid>
+      <guid>https://jinying-che.github.io/jinying.github.io/network/http/</guid>
       <description>hello Http What is Http? http is high level protocol basing on the Tcp.
 What is Https? </description>
     </item>
