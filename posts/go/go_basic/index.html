@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Che Jinying">
+    <meta name="description" content="Go Basic  the basic of go
+ Channel 基本性质  在go的运行时环境，对同一个通道，发送操作是互斥的（即同一时刻，只有一个发送操作会执行），同理，接受操作也是互斥的 元素进入通道，分为两步，为一个原子操作：  对元素进行复制 将副本放入通道内部   元素从通道取出取出，分为三步，为一个原子操作：  对元素进行复制 赋值给接收方 在通道中删除    缓冲与非缓冲   非缓冲通道，send和receive操作会彼此阻塞，直到彼此准备好数据，比如：
+func main(){ c := make(chan int) //当前线程send数据后，会挂起，直至channel中的数据被receive后，才继续执行 c &lt;- 1 //下面这句永远不会执行，导致deadlock fmt.Println(&lt;- c) }   Channel Close   Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic. (don&rsquo;t close a channel from the receiver side and don&rsquo;t close a channel if the channel has multiple concurrent senders.">
+    <meta name="keywords" content="blog,developer,personal">
+
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go Basic"/>
+<meta name="twitter:description" content="Go Basic  the basic of go
+ Channel 基本性质  在go的运行时环境，对同一个通道，发送操作是互斥的（即同一时刻，只有一个发送操作会执行），同理，接受操作也是互斥的 元素进入通道，分为两步，为一个原子操作：  对元素进行复制 将副本放入通道内部   元素从通道取出取出，分为三步，为一个原子操作：  对元素进行复制 赋值给接收方 在通道中删除    缓冲与非缓冲   非缓冲通道，send和receive操作会彼此阻塞，直到彼此准备好数据，比如：
+func main(){ c := make(chan int) //当前线程send数据后，会挂起，直至channel中的数据被receive后，才继续执行 c &lt;- 1 //下面这句永远不会执行，导致deadlock fmt.Println(&lt;- c) }   Channel Close   Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic. (don&rsquo;t close a channel from the receiver side and don&rsquo;t close a channel if the channel has multiple concurrent senders."/>
+
+    <meta property="og:title" content="Go Basic" />
+<meta property="og:description" content="Go Basic  the basic of go
+ Channel 基本性质  在go的运行时环境，对同一个通道，发送操作是互斥的（即同一时刻，只有一个发送操作会执行），同理，接受操作也是互斥的 元素进入通道，分为两步，为一个原子操作：  对元素进行复制 将副本放入通道内部   元素从通道取出取出，分为三步，为一个原子操作：  对元素进行复制 赋值给接收方 在通道中删除    缓冲与非缓冲   非缓冲通道，send和receive操作会彼此阻塞，直到彼此准备好数据，比如：
+func main(){ c := make(chan int) //当前线程send数据后，会挂起，直至channel中的数据被receive后，才继续执行 c &lt;- 1 //下面这句永远不会执行，导致deadlock fmt.Println(&lt;- c) }   Channel Close   Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic. (don&rsquo;t close a channel from the receiver side and don&rsquo;t close a channel if the channel has multiple concurrent senders." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jinying-che.github.io/posts/go/go_basic/" />
+<meta property="article:published_time" content="2020-09-27T19:47:01+08:00" />
+<meta property="article:modified_time" content="2020-09-27T19:47:01+08:00" />
+
+
+    
+      <base href="https://jinying-che.github.io/posts/go/go_basic/">
+    
+    <title>
+  Go Basic · Che Jinying
+</title>
+
+    
+      <link rel="canonical" href="https://jinying-che.github.io/posts/go/go_basic/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://jinying-che.github.io/css/coder.min.9836c03fe5c87d102278a33e86d0591ef36c89b1e17e8e547ebf84c05cee010e.css" integrity="sha256-mDbAP&#43;XIfRAieKM&#43;htBZHvNsibHhfo5Ufr&#43;EwFzuAQ4=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://jinying-che.github.io/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+      <link rel="stylesheet" href="https://jinying-che.github.io/css/custom.css" />
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://jinying-che.github.io/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://jinying-che.github.io/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://jinying-che.github.io/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://jinying-che.github.io/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.74.3" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-auto"
+        onload=""
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://jinying-che.github.io/">
+      Che Jinying
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://jinying-che.github.io/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://jinying-che.github.io/about/">About</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Go Basic</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2020-09-27T19:47:01&#43;08:00'>
+                September 27, 2020
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              4-minute read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <h1 id="go-basic">Go Basic</h1>
+<blockquote>
+<p>the basic of go</p>
+</blockquote>
+<h2 id="channel">Channel</h2>
+<h4 id="基本性质">基本性质</h4>
+<ul>
+<li>在go的运行时环境，对<strong>同一个通道</strong>，发送操作是互斥的（即同一时刻，只有一个发送操作会执行），同理，接受操作也是互斥的</li>
+<li>元素进入通道，分为两步，为一个原子操作：
+<ul>
+<li>对元素进行复制</li>
+<li>将副本放入通道内部</li>
+</ul>
+</li>
+<li>元素从通道取出取出，分为三步，为一个原子操作：
+<ul>
+<li>对元素进行复制</li>
+<li>赋值给接收方</li>
+<li>在通道中删除</li>
+</ul>
+</li>
+</ul>
+<h4 id="缓冲与非缓冲">缓冲与非缓冲</h4>
+<ul>
+<li>
+<p>非缓冲通道，send和receive操作会彼此阻塞，直到彼此准备好数据，比如：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">func main(){
+  c := make(chan int)
+  //当前线程send数据后，会挂起，直至channel中的数据被receive后，才继续执行
+  c &lt;- 1 
+  //下面这句永远不会执行，导致deadlock
+  fmt.Println(&lt;- c)
+}
+</code></pre></div></li>
+</ul>
+<h4 id="channel-close">Channel Close</h4>
+<blockquote>
+<ul>
+<li>Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic. (<strong>don&rsquo;t close a channel from the receiver side and don&rsquo;t close a channel if the channel has multiple concurrent senders</strong>. In other words, we should only close a channel in a sender goroutine if the sender is the only sender of the channel.)</li>
+<li>Channels aren&rsquo;t like files; you don&rsquo;t usually need to close them. Closing is only necessary when the receiver must be told there are no more values coming, such as to terminate a <code>range</code> loop.</li>
+<li><strong>don&rsquo;t close (or send values to) closed channels</strong>.</li>
+</ul>
+</blockquote>
+<h5 id="what-i-think">what I think:</h5>
+<ul>
+<li>
+<p>send or close the channel which has been closed, will cause a panic</p>
+</li>
+<li>
+<p>Close the <strong>channel</strong> or <strong>channel buffer</strong>, just send a close <strong>event</strong> to the goroutines that consuming the channle(s)  , <strong>do not stop the goroutines at  all</strong>, the goroutines are still running, we can deal with the close event by this way:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">if</span> item, ok := &lt;- channel; !ok {
+  <span style="font-style:italic">//stop goroutine
+</span><span style="font-style:italic"></span>}
+</code></pre></div></li>
+<li>
+<p>The value sented before the close event in channel will be received, when they are finished, the close event is in effect (receive zero value / ok is false)</p>
+</li>
+</ul>
+<h2 id="method">Method</h2>
+<p>method should be define in the same package as the stuct defined</p>
+<h3 id="method-vs-function">Method vs Function</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">func</span> (v Vertex) Abs() <span style="">float64</span> {
+	<span style="font-weight:bold">return</span> math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+<span style="font-weight:bold">func</span> AbsFunc(v Vertex) <span style="">float64</span> {
+	<span style="font-weight:bold">return</span> math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+</code></pre></div><p>Functions that take a value argument must take a value of that specific type:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">var</span> v Vertex
+fmt.Println(AbsFunc(v))  <span style="font-style:italic">// OK
+</span><span style="font-style:italic"></span>fmt.Println(AbsFunc(&amp;v)) <span style="font-style:italic">// Compile error!
+</span></code></pre></div><p>while methods with value receivers take either a value or a pointer as the receiver when they are called:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">var</span> v Vertex
+fmt.Println(v.Abs()) <span style="font-style:italic">// OK
+</span><span style="font-style:italic"></span>p := &amp;v
+fmt.Println(p.Abs()) <span style="font-style:italic">// OK
+</span></code></pre></div><h3 id="method-and-package">Method and Package</h3>
+<p>When you create a method in your code the receiver and receiver type must present in the same package.</p>
+<h2 id="build">Build</h2>
+<ul>
+<li>Mac to Linux : <code>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build xxx.go</code></li>
+</ul>
+<h2 id="string">String</h2>
+<blockquote>
+<p>To summarize, strings can contain arbitrary bytes, but when constructed from string literals, those bytes are (almost always) UTF-8.</p>
+<ul>
+<li>Go source code is always UTF-8.</li>
+<li>A string holds arbitrary bytes.</li>
+<li>A string literal, absent byte-level escapes, always holds valid UTF-8 sequences.</li>
+<li>Those sequences represent Unicode code points, called runes.</li>
+<li>No guarantee is made in Go that characters in strings are normalized.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>In Go, a string is in effect a read-only slice of bytes.</p>
+</blockquote>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-style:italic">//Go 1.12.9 string.go
+</span><span style="font-style:italic"></span><span style="font-weight:bold">package</span> runtime
+
+<span style="font-weight:bold">type</span> stringStruct <span style="font-weight:bold">struct</span> {
+	str unsafe.Pointer
+	len <span style="">int</span>
+}
+</code></pre></div><h2 id="goroutine-scheduler">Goroutine Scheduler</h2>
+<blockquote>
+<p>M, P, G</p>
+</blockquote>
+<h3 id="p">P</h3>
+<blockquote>
+<p>Go 语言中有两个运行队列，其中一个是处理器本地的运行队列，另一个是调度器持有的全局运行队列，只有在本地运行队列没有剩余空间时才会使用全局队列存储 Goroutine。</p>
+</blockquote>
+<h2 id="struct">Struct</h2>
+<h3 id="init">init</h3>
+<ul>
+<li>If the struct is nested, should be initialized step by step manually</li>
+</ul>
+<h2 id="new--make">New &amp;&amp; Make</h2>
+<blockquote>
+<ul>
+<li>
+<p>The basic distinction is that <code>new(T)</code> returns a <code>*T</code>, a pointer that Go programs can dereference implicitly (the black pointers in the diagrams), while <code>make(T, </code><em>args</em><code>)</code> returns an ordinary <code>T</code>, not a pointer.</p>
+</li>
+<li>
+<p><strong>new()</strong> returned is a pointer to a newly allocated zero value of that type,  the <strong>make</strong> built-in function allocates and initializes an object of type slice, map, or chan (only).</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="slice">Slice</h2>
+<h3 id="underlying-data-structure">underlying data structure</h3>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-style:italic">//Go 1.12.9 slice.go
+</span><span style="font-style:italic"></span>
+<span style="font-weight:bold">type</span> slice <span style="font-weight:bold">struct</span> {
+   array unsafe.Pointer
+   len   <span style="">int</span>
+   cap   <span style="">int</span>
+}
+</code></pre></div><h3 id="pointer-to-slice">pointer to slice</h3>
+<ul>
+<li><code>slice []byte</code>: If pass the slice to function, and change the slice index in function, like <code>slice = slice[0: len(slice) - 1]</code>, then exit the function, cannot change the <strong>slice header</strong>, so the slice is not changed yet.</li>
+<li><code>slice *[]byte</code>: If pass the pointer that point to the slice, if change index, then will change the <strong>slice header</strong>, the slice is changed finally.</li>
+<li>By the way, if change the content of slice, will change the uderlying array, so both is ok.</li>
+</ul>
+<blockquote>
+<p>It&rsquo;s important to understand that even though a slice contains a pointer, it is itself a value. Under the covers, it is a struct value holding a pointer and a length. It is <em>not</em> a pointer to a struct.</p>
+</blockquote>
+<h2 id="context">Context</h2>
+<h2 id="interface">Interface</h2>
+<ul>
+<li><code>interface{}</code>: An empty interface may hold values of any type, Empty interfaces are used by code that handles values of unknown type.</li>
+</ul>
+<h3 id="pointer-to-interface">Pointer to Interface</h3>
+<p><strong>It make no sense</strong>, when we make a struct to implement a interface&rsquo;s method, we want to use this struct in which the interface is used, It&rsquo;s object-oriented.</p>
+<p>If we define a function which parameter is interface, we can use the struct that implemented the interface, but if which parametrer is pointer to interface, it can not work, make no sense, just a poniter to interface, useless.</p>
+<h2 id="pointers">Pointers</h2>
+<h3 id="receivers-pointers-vs-values">Receivers: Pointers vs Values</h3>
+<blockquote>
+<p>The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.</p>
+</blockquote>
+<p>##Function</p>
+<ul>
+<li>Function is the first-class and it&rsquo;s the Reference Type which means whenever passing the Function, we pass the the pointer of the Function.</li>
+</ul>
+<h2 id="modules">Modules</h2>
+<h3 id="non-public-modules">Non-public modules</h3>
+<blockquote>
+<p><a href="https://golang.org/cmd/go/#hdr-Module_configuration_for_non_public_modules">https://golang.org/cmd/go/#hdr-Module_configuration_for_non_public_modules</a></p>
+</blockquote>
+<h2 id="q--a">Q &amp;&amp; A</h2>
+<ul>
+<li>Value or Pointer ?</li>
+<li>Pointer to Interface ? value interface</li>
+</ul>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>BE SLOWER BE DEEPER</p>
+      
+      
+        ©
+        
+        2020
+         Che Jinying 
+      
+      
+         · 
+        Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://jinying-che.github.io/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+  </body>
+
+</html>
