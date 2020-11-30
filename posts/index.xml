@@ -1,43 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Che Jinying</title>
+    <title>Posts on I&#39;m Che Jinying</title>
     <link>https://jinying-che.github.io/posts/</link>
-    <description>Recent content in Posts on Che Jinying</description>
+    <description>Recent content in Posts on I&#39;m Che Jinying</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Sep 2020 19:47:01 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 30 Nov 2020 08:35:51 +0800</lastBuildDate>
     
 	<atom:link href="https://jinying-che.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Go Basic</title>
-      <link>https://jinying-che.github.io/posts/go/go_basic/</link>
-      <pubDate>Sun, 27 Sep 2020 19:47:01 +0800</pubDate>
+      <title>How to profile Golang Program</title>
+      <link>https://jinying-che.github.io/posts/go/diagnostics/</link>
+      <pubDate>Mon, 30 Nov 2020 08:35:51 +0800</pubDate>
       
-      <guid>https://jinying-che.github.io/posts/go/go_basic/</guid>
-      <description>Go Basic  the basic of go
- Channel 基本性质  在go的运行时环境，对同一个通道，发送操作是互斥的（即同一时刻，只有一个发送操作会执行），同理，接受操作也是互斥的 元素进入通道，分为两步，为一个原子操作：  对元素进行复制 将副本放入通道内部   元素从通道取出取出，分为三步，为一个原子操作：  对元素进行复制 赋值给接收方 在通道中删除    缓冲与非缓冲   非缓冲通道，send和receive操作会彼此阻塞，直到彼此准备好数据，比如：
-func main(){ c := make(chan int) //当前线程send数据后，会挂起，直至channel中的数据被receive后，才继续执行 c &amp;lt;- 1 //下面这句永远不会执行，导致deadlock fmt.Println(&amp;lt;- c) }   Channel Close   Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic. (don&amp;rsquo;t close a channel from the receiver side and don&amp;rsquo;t close a channel if the channel has multiple concurrent senders.</description>
+      <guid>https://jinying-che.github.io/posts/go/diagnostics/</guid>
+      <description>First of all, this document is in progress and will keep updated.
+Diagnostic by the http call is usually a convinient way in pratice. What we need to do is only two steps before starting the program:
+  import _ &amp;quot;net/http/pprof&amp;quot; http.ListenAndServe(&amp;quot;the address that defined in advance&amp;quot;, better use privaty ServerMux instead of the default one)   Profile The port 6060 is an example that defined for the http listening.</description>
     </item>
     
     <item>
-      <title>First</title>
-      <link>https://jinying-che.github.io/posts/first/</link>
-      <pubDate>Sun, 27 Sep 2020 19:32:13 +0800</pubDate>
+      <title>How does golang implement the Rate Limiter</title>
+      <link>https://jinying-che.github.io/posts/go/ratelimiter/</link>
+      <pubDate>Fri, 20 Nov 2020 12:04:09 +0800</pubDate>
       
-      <guid>https://jinying-che.github.io/posts/first/</guid>
-      <description>Hello Hugo! This is my first blog in my personal website.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://jinying-che.github.io/posts/go/go_ratelimit/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://jinying-che.github.io/posts/go/go_ratelimit/</guid>
-      <description>How does golang implement the Rate Limiter? core concept  burst: the size of the bucket which is possible more than the limit token: refer to https://en.wikipedia.org/wiki/Token_bucket limit: the number of tokens that is obtained per second  core function // reserveN is a helper method for AllowN, ReserveN, and WaitN. // maxFutureReserve specifies the maximum reservation wait duration allowed. // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN.</description>
+      <guid>https://jinying-che.github.io/posts/go/ratelimiter/</guid>
+      <description>Core concept  burst: the size of the bucket which is possible more than the limit token: refer to https://en.wikipedia.org/wiki/Token_bucket limit: the number of tokens that is obtained per second  Core function 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53  // reserveN is a helper method for AllowN, ReserveN, and WaitN.</description>
     </item>
     
   </channel>
