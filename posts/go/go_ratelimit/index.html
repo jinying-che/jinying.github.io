@@ -7,32 +7,31 @@
     <meta http-equiv="Content-Language" content="en">
 
     <meta name="author" content="Che Jinying">
-    <meta name="description" content="Hello Hugo! This is my first blog in my personal website.">
+    <meta name="description" content="How does golang implement the Rate Limiter? core concept  burst: the size of the bucket which is possible more than the limit token: refer to https://en.wikipedia.org/wiki/Token_bucket limit: the number of tokens that is obtained per second  core function // reserveN is a helper method for AllowN, ReserveN, and WaitN. // maxFutureReserve specifies the maximum reservation wait duration allowed. // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN.">
     <meta name="keywords" content="blog,developer,personal">
 
     
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="First"/>
-<meta name="twitter:description" content="Hello Hugo! This is my first blog in my personal website."/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="How does golang implement the Rate Limiter? core concept  burst: the size of the bucket which is possible more than the limit token: refer to https://en.wikipedia.org/wiki/Token_bucket limit: the number of tokens that is obtained per second  core function // reserveN is a helper method for AllowN, ReserveN, and WaitN. // maxFutureReserve specifies the maximum reservation wait duration allowed. // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN."/>
 
-    <meta property="og:title" content="First" />
-<meta property="og:description" content="Hello Hugo! This is my first blog in my personal website." />
+    <meta property="og:title" content="" />
+<meta property="og:description" content="How does golang implement the Rate Limiter? core concept  burst: the size of the bucket which is possible more than the limit token: refer to https://en.wikipedia.org/wiki/Token_bucket limit: the number of tokens that is obtained per second  core function // reserveN is a helper method for AllowN, ReserveN, and WaitN. // maxFutureReserve specifies the maximum reservation wait duration allowed. // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://jinying-che.github.io/posts/first/" />
-<meta property="article:published_time" content="2020-09-27T19:32:13+08:00" />
-<meta property="article:modified_time" content="2020-09-27T19:32:13+08:00" />
+<meta property="og:url" content="https://jinying-che.github.io/posts/go/go_ratelimit/" />
+
 
 
     
-      <base href="https://jinying-che.github.io/posts/first/">
+      <base href="https://jinying-che.github.io/posts/go/go_ratelimit/">
     
     <title>
-  First · Che Jinying
+   · Che Jinying
 </title>
 
     
-      <link rel="canonical" href="https://jinying-che.github.io/posts/first/">
+      <link rel="canonical" href="https://jinying-che.github.io/posts/go/go_ratelimit/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -119,14 +118,14 @@
     <article>
       <header>
         <div class="post-title">
-          <h1 class="title">First</h1>
+          <h1 class="title"></h1>
         </div>
         <div class="post-meta">
           <div class="date">
             <span class="posted-on">
               <i class="fas fa-calendar"></i>
-              <time datetime='2020-09-27T19:32:13&#43;08:00'>
-                September 27, 2020
+              <time datetime='0001-01-01T00:00:00Z'>
+                January 1, 0001
               </time>
             </span>
             <span class="reading-time">
@@ -141,9 +140,68 @@
 
       <div>
         
-        <h1 id="hello-hugo">Hello Hugo!</h1>
-<p>This is my first blog in <strong>my personal website</strong>.</p>
+        <h1 id="how-does-golang-implement-the-rate-limiter">How does golang implement the Rate Limiter?</h1>
+<h2 id="core-concept">core concept</h2>
+<ul>
+<li>burst: the size of the bucket which is possible more than the limit</li>
+<li>token: refer to <a href="https://en.wikipedia.org/wiki/Token_bucket">https://en.wikipedia.org/wiki/Token_bucket</a></li>
+<li>limit: the number of tokens that is obtained per second</li>
+</ul>
+<h2 id="core-function">core function</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-style:italic">// reserveN is a helper method for AllowN, ReserveN, and WaitN.
+</span><span style="font-style:italic">// maxFutureReserve specifies the maximum reservation wait duration allowed.
+</span><span style="font-style:italic">// reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN.
+</span><span style="font-style:italic"></span><span style="font-weight:bold">func</span> (lim *Limiter) reserveN(now time.Time, n <span style="">int</span>, maxFutureReserve time.Duration) Reservation {
+	lim.mu.Lock()
 
+	<span style="font-weight:bold">if</span> lim.limit == Inf {
+		lim.mu.Unlock()
+		<span style="font-weight:bold">return</span> Reservation{
+			ok:        <span style="font-weight:bold">true</span>,
+			lim:       lim,
+			tokens:    n,
+			timeToAct: now,
+		}
+	}
+
+	now, last, tokens := lim.advance(now)
+
+	<span style="font-style:italic">// Calculate the remaining number of tokens resulting from the request.
+</span><span style="font-style:italic"></span>	tokens -= float64(n)
+
+	<span style="font-style:italic">// Calculate the wait duration
+</span><span style="font-style:italic"></span>	<span style="font-weight:bold">var</span> waitDuration time.Duration
+	<span style="font-weight:bold">if</span> tokens &lt; 0 {
+		waitDuration = lim.limit.durationFromTokens(-tokens)
+	}
+
+	<span style="font-style:italic">// Decide result
+</span><span style="font-style:italic"></span>	ok := n &lt;= lim.burst &amp;&amp; waitDuration &lt;= maxFutureReserve
+
+	<span style="font-style:italic">// Prepare reservation
+</span><span style="font-style:italic"></span>	r := Reservation{
+		ok:    ok,
+		lim:   lim,
+		limit: lim.limit,
+	}
+	<span style="font-weight:bold">if</span> ok {
+		r.tokens = n
+		r.timeToAct = now.Add(waitDuration)
+	}
+
+	<span style="font-style:italic">// Update state
+</span><span style="font-style:italic"></span>	<span style="font-weight:bold">if</span> ok {
+		lim.last = now
+		lim.tokens = tokens
+		lim.lastEvent = r.timeToAct
+	} <span style="font-weight:bold">else</span> {
+		lim.last = last
+	}
+
+	lim.mu.Unlock()
+	<span style="font-weight:bold">return</span> r
+}
+</code></pre></div>
       </div>
 
 

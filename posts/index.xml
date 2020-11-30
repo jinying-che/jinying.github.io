@@ -31,5 +31,14 @@ func main(){ c := make(chan int) //当前线程send数据后，会挂起，直�
       <description>Hello Hugo! This is my first blog in my personal website.</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://jinying-che.github.io/posts/go/go_ratelimit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jinying-che.github.io/posts/go/go_ratelimit/</guid>
+      <description>How does golang implement the Rate Limiter? core concept  burst: the size of the bucket which is possible more than the limit token: refer to https://en.wikipedia.org/wiki/Token_bucket limit: the number of tokens that is obtained per second  core function // reserveN is a helper method for AllowN, ReserveN, and WaitN. // maxFutureReserve specifies the maximum reservation wait duration allowed. // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN.</description>
+    </item>
+    
   </channel>
 </rss>
