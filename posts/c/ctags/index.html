@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme=""><head>
-    <title> Che Jinying | 404 Page not found </title>
+    <title> Che Jinying | Setup Universal Ctags for Mac </title>
 
     
     <meta charset="utf-8"><meta name="generator" content="Hugo 0.80.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -21,7 +21,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://jinying-che.github.io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://jinying-che.github.io/favicon-16x16.png">
 
-    <link rel="canonical" href="https://jinying-che.github.io/404.html">
+    <link rel="canonical" href="https://jinying-che.github.io/posts/c/ctags/">
 
     
     
@@ -32,8 +32,8 @@
             integrity="sha256-54LbE27BjRBaRVJwLqxJ9GINaGfaP7&#43;Ai9U&#43;gGyWvm4="
             crossorigin="anonymous"></script>
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="404 Page not found"/>
-<meta name="twitter:description" content="Call me J"/>
+<meta name="twitter:title" content="Setup Universal Ctags for Mac"/>
+<meta name="twitter:description" content="A brief tutorial for setting up ctags in mac"/>
 
 </head>
 <body><div class="sidebar animated fadeInDown">
@@ -104,12 +104,77 @@
 
     <div class="autopagerize_page_element">
         <div class="content">
-    <div class="page_404">
-        <h1>404</h1>
-        <h2>Page Not Found</h2>
-        <p>Sorry, this page does not exist.</p>
-        <p>You can head back to <a href="https://jinying-che.github.io/">homepage</a>.</p>
+    <div class="post animated fadeInDown">
+        <div class="post-content">
+
+            <div class="post-title">
+                <h3>Setup Universal Ctags for Mac</h3>
+                
+            </div>
+
+            <p>At the Beginning of this year, I&rsquo;m going to start reading <em>Computer System A Programmer's Perspective</em>, this whole book introduces the different aspects of computer system basing on C language, and there&rsquo;s also plenty of C demos provided in the <a href="http://csapp.cs.cmu.edu/3e/code.html">web</a>, to navigate the code, I try to use <strong>ctags</strong>.</p>
+<h3 id="what-is-universal-ctags">What is Universal Ctags?</h3>
+<blockquote>
+<p><a href="https://ctags.io/">Universal Ctags</a> (abbreviated as u-ctags) is a maintained implementation of ctags. ctags generates an index (or tag) file of language objects found in source files for programming languages. This index makes it easy for text editors and other tools to locate the indexed items.</p>
+</blockquote>
+<h3 id="install-in-mac">Install in Mac</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">brew tap universal-ctags/universal-ctags
+brew install --HEAD universal-ctags
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>brew tap
+A <a href="https://docs.brew.sh/Taps">tap</a> is Homebrew-speak for a Git repository containing extra formulae.</p>
+</blockquote>
+<h3 id="configure-vimrc">Configure .vimrc</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell"><span style="color:#09f;font-style:italic">#search the .tags in the current directory, will keep searching the upper directory if not found</span>
+<span style="color:#366">set</span> <span style="color:#033">tags</span><span style="color:#555">=</span>./.tags;,.tags
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="setup-alias-for-ctags">Setup alias for ctags</h3>
+<p>Because there is already a <strong>ctags</strong> command in Mac, which is <strong>/usr/bin/ctags</strong>, we need to create an alias of <code>ctags</code> for overwriting.</p>
+<p>Add this in <strong>.zshrc</strong> (suppose to use <strong>zsh</strong>)</p>
+<ul>
+<li><code>alias ctags=&quot;/usr/local/bin/ctags&quot;</code>
+<blockquote>
+<p><strong><code>which ctags</code></strong> to verify</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="generate-tag-recursively">Generate tag recursively</h3>
+<p>In the root of the project:</p>
+<ul>
+<li><code>ctags -f .tags -R .</code>
+<ul>
+<li><strong>-f .tags</strong> indicates that the output file is <strong>.tags</strong></li>
+<li><strong>-R</strong> means <strong>--recurse</strong></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div class="post-footer">
+            <div class="info">
+                
+                
+            </div>
+        </div>
+
+        
     </div>
+
 
         </div>
     </div>

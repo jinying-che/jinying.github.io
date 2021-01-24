@@ -6,10 +6,16 @@
     <description>Recent content in Posts on I&#39;m Che Jinying</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Nov 2020 08:35:51 +0800</lastBuildDate>
-    
-	<atom:link href="https://jinying-che.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 23 Jan 2021 15:16:29 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setup Universal Ctags for Mac</title>
+      <link>https://jinying-che.github.io/posts/c/ctags/</link>
+      <pubDate>Sat, 23 Jan 2021 15:16:29 +0800</pubDate>
+      
+      <guid>https://jinying-che.github.io/posts/c/ctags/</guid>
+      <description>At the Beginning of this year, I&amp;rsquo;m going to start reading Computer System A Programmer&#39;s Perspective, this whole book introduces the different aspects of computer system basing on C language, and there&amp;rsquo;s also plenty of C demos provided in the web, to navigate the code, I try to use ctags.
+What is Universal Ctags?  Universal Ctags (abbreviated as u-ctags) is a maintained implementation of ctags. ctags generates an index (or tag) file of language objects found in source files for programming languages.</description>
+    </item>
     
     <item>
       <title>How to profile Golang Program</title>
