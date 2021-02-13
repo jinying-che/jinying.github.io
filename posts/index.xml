@@ -6,7 +6,17 @@
     <description>Recent content in Posts on I&#39;m Che Jinying</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Jan 2021 15:16:29 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Feb 2021 16:31:28 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithm: How I leetcode</title>
+      <link>https://jinying-che.github.io/posts/algorithm/</link>
+      <pubDate>Sat, 13 Feb 2021 16:31:28 +0800</pubDate>
+      
+      <guid>https://jinying-che.github.io/posts/algorithm/</guid>
+      <description>&lt;p&gt;When do you usually use &lt;a href=&#34;https://leetcode.com/&#34;&gt;leetcode&lt;/a&gt;? For most of people, I think, the answer is to prepare the interview, me too.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This post will be kept updating&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Setup Universal Ctags for Mac</title>
       <link>https://jinying-che.github.io/posts/c/ctags/</link>
