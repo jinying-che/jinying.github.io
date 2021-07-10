@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme=""><head>
-    <title> Che Jinying | Posts </title>
+    <title> Che Jinying | Go Src </title>
 
     
     <meta charset="utf-8"><meta name="generator" content="Hugo 0.80.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -21,10 +21,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://jinying-che.github.io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://jinying-che.github.io/favicon-16x16.png">
 
-    <link rel="canonical" href="https://jinying-che.github.io/posts/">
+    <link rel="canonical" href="https://jinying-che.github.io/posts/go/go_src/">
 
     
-    <link rel="alternate" type="application/rss+xml" href="https://jinying-che.github.io/posts/index.xml" title="I'm Che Jinying" />
     
     
     
@@ -33,8 +32,8 @@
             integrity="sha256-54LbE27BjRBaRVJwLqxJ9GINaGfaP7&#43;Ai9U&#43;gGyWvm4="
             crossorigin="anonymous"></script>
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Posts"/>
-<meta name="twitter:description" content="Call me nobody"/>
+<meta name="twitter:title" content="Go Src"/>
+<meta name="twitter:description" content="Golang Source Code Tips"/>
 
 </head>
 <body><div class="sidebar animated fadeInDown">
@@ -83,7 +82,7 @@
                    title="">Home</a></li>
         
             
-            <li><a class="current"
+            <li><a 
                    href="/posts/"
                         
                    title="">Posts</a></li>
@@ -105,81 +104,49 @@
 
     <div class="autopagerize_page_element">
         <div class="content">
-    <div class="archive animated fadeInDown">
-        <ul class="list-with-title">
-            
-                <div class="listing-title">2021</div>
+    <div class="post animated fadeInDown">
+        <div class="post-content">
+
+            <div class="post-title">
+                <h3>Go Src</h3>
                 
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/go/go_src/" title="Go Src">Go Src</a>
-                                <div class="post-time"><span class="date">Jun 27</span></div>
-                            </div>
-                        </div>
-                    </ul>
+            </div>
+
+            <p>Golang Source Code Tips</p>
+<h3 id="syncwaitgroup">sync.WaitGroup</h3>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#069;font-weight:bold">type</span> WaitGroup <span style="color:#069;font-weight:bold">struct</span> {
+	noCopy noCopy
+
+	<span style="color:#09f;font-style:italic">// 64-bit value: high 32 bits are counter, low 32 bits are waiter count.
+</span><span style="color:#09f;font-style:italic"></span>	<span style="color:#09f;font-style:italic">// 64-bit atomic operations require 64-bit alignment, but 32-bit
+</span><span style="color:#09f;font-style:italic"></span>	<span style="color:#09f;font-style:italic">// compilers do not ensure it. So we allocate 12 bytes and then use
+</span><span style="color:#09f;font-style:italic"></span>	<span style="color:#09f;font-style:italic">// the aligned 8 bytes in them as state, and the other 4 as storage
+</span><span style="color:#09f;font-style:italic"></span>	<span style="color:#09f;font-style:italic">// for the sema.
+</span><span style="color:#09f;font-style:italic"></span>	state1 [<span style="color:#f60">3</span>]<span style="color:#078;font-weight:bold">uint32</span>
+}
+</code></pre></div><ul>
+<li>
+<p>It&rsquo;s based on golang <strong>semaphore</strong> model, implemented by <code>runtime_Semrelease</code> and <code>runtime_Semacquire</code></p>
+<blockquote>
+<p>not relevant, semaphore is common mechanism used in concurrent progamming, like <a href="https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem">Readers–writers problem</a></p>
+</blockquote>
+</li>
+<li>
+<p><strong>state1</strong> includes counter, waiter and semahpore, which obtained by <code>func (wg *WaitGroup) state() (statep *uint64, semap *uint32)</code></p>
+<p><img src="/images/wait_group.png" alt="wait_group_state_byte_representation"></p>
+</li>
+</ul>
+        </div>
+        <div class="post-footer">
+            <div class="info">
                 
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/hhkb/" title="HHKB">HHKB</a>
-                                <div class="post-time"><span class="date">Jun 24</span></div>
-                            </div>
-                        </div>
-                    </ul>
                 
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/shadowsocks/" title="Setup Shadowsock Server on Ubuntu">Setup Shadowsock Server on Ubuntu</a>
-                                <div class="post-time"><span class="date">Apr 23</span></div>
-                            </div>
-                        </div>
-                    </ul>
-                
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/network/hardware/" title="Brief Introduction of Network Hardware">Brief Introduction of Network Hardware</a>
-                                <div class="post-time"><span class="date">Apr 5</span></div>
-                            </div>
-                        </div>
-                    </ul>
-                
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/algorithm/" title="Algorithm: How I leetcode">Algorithm: How I leetcode</a>
-                                <div class="post-time"><span class="date">Feb 13</span></div>
-                            </div>
-                        </div>
-                    </ul>
-                
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/c/ctags/" title="Setup Universal Ctags for Mac">Setup Universal Ctags for Mac</a>
-                                <div class="post-time"><span class="date">Jan 23</span></div>
-                            </div>
-                        </div>
-                    </ul>
-                
-            
-                <div class="listing-title">2020</div>
-                
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/go/diagnostics/" title="How to profile Golang Program">How to profile Golang Program</a>
-                                <div class="post-time"><span class="date">Nov 30</span></div>
-                            </div>
-                        </div>
-                    </ul>
-                
-                    <ul class="listing">
-                        <div class="listing-item">
-                            <div class="listing-post"><a href="https://jinying-che.github.io/posts/go/ratelimiter/" title="How does golang implement the Rate Limiter">How does golang implement the Rate Limiter</a>
-                                <div class="post-time"><span class="date">Nov 20</span></div>
-                            </div>
-                        </div>
-                    </ul>
-                
-            
-        </ul>
+            </div>
+        </div>
+
+        
     </div>
+
 
         </div>
     </div>

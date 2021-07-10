@@ -6,7 +6,25 @@
     <description>Recent content on I&#39;m Che Jinying</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Apr 2021 09:22:08 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Jun 2021 17:34:13 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go Src</title>
+      <link>https://jinying-che.github.io/posts/go/go_src/</link>
+      <pubDate>Sun, 27 Jun 2021 17:34:13 +0800</pubDate>
+      
+      <guid>https://jinying-che.github.io/posts/go/go_src/</guid>
+      <description>&lt;p&gt;Golang Source Code Tips&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>HHKB</title>
+      <link>https://jinying-che.github.io/posts/hhkb/</link>
+      <pubDate>Thu, 24 Jun 2021 21:20:23 +0800</pubDate>
+      
+      <guid>https://jinying-che.github.io/posts/hhkb/</guid>
+      <description>CheatSheet  BS and Delete  Win mode: Fn+Control+w Mac mode: Fn+Control+m    </description>
+    </item>
+    
     <item>
       <title>Setup Shadowsock Server on Ubuntu</title>
       <link>https://jinying-che.github.io/posts/shadowsocks/</link>
