@@ -6,7 +6,22 @@
     <description>Recent content on I&#39;m Che Jinying</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Jun 2021 17:34:13 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Jul 2021 11:18:14 +0800</lastBuildDate><atom:link href="https://jinying-che.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tmux Cheat Sheet</title>
+      <link>https://jinying-che.github.io/posts/tmux/</link>
+      <pubDate>Sat, 10 Jul 2021 11:18:14 +0800</pubDate>
+      
+      <guid>https://jinying-che.github.io/posts/tmux/</guid>
+      <description>The basic usage of Tmux, personally, I think Tmux makes more sense in server side than local.
+Session  new session   tmux new -s name
+  show session   tmux ls
+  attach session with name   tmux a -t name
+  detach from session   ctrl+b then d
+ Panes  split pane horizontally   ctrl+b then %
+  split pane vertically   ctrl+b then &amp;quot;</description>
+    </item>
+    
     <item>
       <title>Go Src</title>
       <link>https://jinying-che.github.io/posts/go/go_src/</link>
